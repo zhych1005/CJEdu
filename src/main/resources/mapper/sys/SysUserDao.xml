@@ -28,11 +28,9 @@
 
     <!--查询用户列表-->
     <select id="queryUserList" resultType="io.renren.modules.sys.vo.UserListVO">
-        SELECT a.user_id as userId, a.username, b.area_name as areaName, a.type, a.mobile, a.`status`, a.create_time as
+        SELECT a.user_id as userId, a.username, a.type, a.mobile, a.`status`, a.create_time as
         createTime
         FROM sys_user a
-        INNER JOIN tb_area b
-        ON a.area_id = b.id
         <where>
             <if test="username != null and username != ''">
                 a.username like '%${username}%'
