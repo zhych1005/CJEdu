@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.app.dao.LogDao">
+
+    <!--日志创建-->
+    <insert id="buildLog">
+        INSERT INTO tb_log(order_id,
+                           area_id,
+                           assign_id,
+                           driver_id,
+                           service_id,
+                           keyboarder_id,
+                           operation,
+                           order_status,
+                           description)
+        VALUES (#{orderId},
+                #{areaId},
+                #{assignId},
+                #{driverId},
+                #{serviceId},
+                #{keyboarderId},
+                #{operation},
+                #{orderStatus},
+                #{description})
+    </insert>
+</mapper>

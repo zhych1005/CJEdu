@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.app.dao.UserDao">
+
+    <!--根据openid查询用户-->
+    <select id="selectByOpenid" parameterType="string" resultType="io.renren.modules.app.entity.UserEntity">
+        select mobile,
+               open_id,
+               type,
+               status,
+               user_id,
+               type,
+               username,
+               area_id
+        FROM sys_user
+        where open_id = #{openid}
+    </select>
+
+    <!--根据手机号查询用户-->
+    <select id="selectByMobile" parameterType="string" resultType="io.renren.modules.app.entity.UserEntity">
+        select mobile,
+               open_id,
+               type,
+               status,
+               user_id,
+               type,
+               username,
+               area_id
+        FROM sys_user
+        where mobile = #{mobile}
+    </select>
+
+    <!--查询所有的派单人员-->
+    <select id="selectAllAssign" resultType="io.renren.modules.app.entity.UserEntity">
+        select username, user_id
+        from sys_user
+        where type = 3
+    </select>
+
+    <!--查询所有司机-->
+    <select id="selectAllDriver" resultType="io.renren.modules.app.entity.UserEntity">
+        select username, user_id
+        from sys_user
+        where type = 5
+    </select>
+
+    <select id="selectOpenidByName" parameterType="string" resultType="io.renren.modules.app.entity.UserEntity">
+        select open_id, user_id
+        from sys_user
+        where username = #{username}
+    </select>
+
+    <!--根据派单员的id查找派单员的openid-->
+    <select id="selectAssignOpenidByUserId" parameterType="int" resultType="java.lang.String">
+        select open_id
+        from sys_user
+        where user_id = #{assignId}
+    </select>
+
+    <update id="addOpenid">
+        update sys_user
+        set open_id = #{openId}
+        where mobile = #{mobile}
+    </update>
+
+    <select id="selectUserStatus" parameterType="int" resultType="int">
+        select status
+        from sys_user
+        where user_id = #{userId}
+    </select>
+
+    <!--通过id查询openid-->
+    <select id="selectOpenidByUserId" resultType="java.lang.String">
+        select open_id
+        from sys_user
+        where user_id = #{userId}
+    </select>
+</mapper>

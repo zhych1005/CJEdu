@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.redis.open",
+      "type": "java.lang.String",
+      "description": "Description for spring.redis.open."
+    },
+    {
+      "name": "spring.resources.mvc.static-path-pattern",
+      "type": "java.lang.String",
+      "description": "Description for spring.resources.mvc.static-path-pattern."
+    }
+  ] }
