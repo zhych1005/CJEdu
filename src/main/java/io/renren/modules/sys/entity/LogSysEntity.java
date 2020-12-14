@@ -4,7 +4,7 @@ package io.renren.modules.sys.entity;
 import lombok.Data;
 
 @Data
-public class LogEntity {
+public class LogSysEntity {
 
     private Integer logId;
 
