@@ -2,23 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="io.renren.modules.sys.dao.StuDao">
-
-    <insert id="addStu">
+    <insert id="addStu" useGeneratedKeys="true" keyProperty="stuId">
         insert into tb_stu(stu_name,
                            open_id,
                            mobile,
                            gender,
                            address,
                            age,
-                           parent,
-                           status)
-        values (#{stuaName},
+                           parent)
+        values (#{stuName},
                 #{openId},
                 #{mobile},
                 #{gender},
                 #{address},
                 #{age},
-                #{parent},
-                #{status})
+                #{parent})
     </insert>
 </mapper>

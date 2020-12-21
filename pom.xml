@@ -6,7 +6,7 @@
 	<artifactId>cjedu</artifactId>
 	<version>3.0.0</version>
 	<packaging>jar</packaging>
-	<description>cjedu</description>
+	<description>CJEdu</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

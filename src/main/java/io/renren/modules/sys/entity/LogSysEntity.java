@@ -1,9 +1,11 @@
 package io.renren.modules.sys.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
+@TableName("tb_log")
 public class LogSysEntity {
 
     private Integer logId;
