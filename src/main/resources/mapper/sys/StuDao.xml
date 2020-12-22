@@ -18,4 +18,22 @@
                 #{age},
                 #{parent})
     </insert>
+
+    <select id="selectAllStu" resultType="io.renren.modules.sys.vo.StuVO">
+        SELECT a.stu_id,
+               a.stu_name,
+               a.gender,
+               a.age,
+               a.parent,
+               a.mobile,
+               b.sub_name,
+               b.sub_total,
+               b.sub_use,
+               b.sub_surplus,
+               a.create_time,
+               a.update_time
+        from tb_stu a
+                 inner JOIN tb_subject b
+                            on a.stu_id = b.stu_id
+    </select>
 </mapper>

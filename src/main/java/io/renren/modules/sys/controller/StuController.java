@@ -32,6 +32,7 @@ public class StuController {
 
     @PostMapping("/save")
     public R addStu(@RequestBody StuVO stuVO) {
+        // 学员添加
         StuEntity stuEntity = new StuEntity();
         stuEntity.setStuName(stuVO.getStuName());
         stuEntity.setMobile(stuVO.getMobile());
@@ -41,6 +42,7 @@ public class StuController {
         stuEntity.setParent(stuVO.getParent());
         stuService.addStu(stuEntity);
 
+        // 课程添加
         SubjectEntity subjectEntity = new SubjectEntity();
         subjectEntity.setStuId(stuEntity.getStuId());
         subjectEntity.setCost(stuVO.getCost());
@@ -50,6 +52,7 @@ public class StuController {
         subjectEntity.setSubUse(0);
         subjectService.addSub(subjectEntity);
 
+        // 日志添加
         LogSysEntity logSysEntity = new LogSysEntity();
         logSysEntity.setStuId(stuEntity.getStuId());
         logSysEntity.setSubId(subjectEntity.getSubId());

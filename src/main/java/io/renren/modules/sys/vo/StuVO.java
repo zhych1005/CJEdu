@@ -3,6 +3,8 @@ package io.renren.modules.sys.vo;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class StuVO {
 
@@ -24,7 +26,15 @@ public class StuVO {
 
     private Integer total;
 
+    private Integer subSurplus;
+
+    private Integer subUse;
+
     private Integer cost;
 
     private String description;
+
+    private Date createTime;
+
+    private Date updateTime;
 }
