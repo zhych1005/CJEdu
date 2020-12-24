@@ -10,10 +10,7 @@ import io.renren.modules.sys.service.StuService;
 import io.renren.modules.sys.service.SubjectService;
 import io.renren.modules.sys.vo.StuVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sys/stu")
@@ -30,6 +27,12 @@ public class StuController {
         this.logService = logService;
     }
 
+    /**
+     * 新生的添加
+     *
+     * @param stuVO 学生
+     * @return Ok
+     */
     @PostMapping("/save")
     public R addStu(@RequestBody StuVO stuVO) {
         // 学员添加
@@ -60,5 +63,15 @@ public class StuController {
         logSysEntity.setDescription(stuVO.getDescription());
         logService.addLog(logSysEntity);
         return R.ok();
+    }
+
+    /**
+     * 学生列表的查询
+     *
+     * @return 学生列表
+     */
+    @GetMapping("/list")
+    public R selectAllStu() {
+        return R.ok().put("stuList", stuService.selectAllStu());
     }
 }

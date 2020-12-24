@@ -27,4 +27,9 @@ public class StuDaoTest extends TestCase {
         stuDao.addStu(stuEntity);
         System.out.println(stuEntity.getStuId());
     }
+
+    @Test
+    public void stuList() {
+        System.out.println(stuDao.selectAllStu());
+    }
 }
