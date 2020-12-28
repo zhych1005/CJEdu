@@ -35,5 +35,10 @@
         from tb_stu a
                  inner JOIN tb_subject b
                             on a.stu_id = b.stu_id
+        <where>
+            <if test="stuName != null and stuName != ''">
+                a.stu_name like '%${stuName}%'
+            </if>
+        </where>
     </select>
 </mapper>

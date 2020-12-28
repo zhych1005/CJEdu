@@ -22,9 +22,9 @@ public class StuVO {
 
     private String address;
 
-    private String subject;
+    private String subName;
 
-    private Integer total;
+    private Integer subTotal;
 
     private Integer subSurplus;
 

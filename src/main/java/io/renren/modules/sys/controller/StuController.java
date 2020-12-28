@@ -1,6 +1,7 @@
 package io.renren.modules.sys.controller;
 
 
+import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.sys.entity.LogSysEntity;
 import io.renren.modules.sys.entity.StuEntity;
@@ -11,6 +12,8 @@ import io.renren.modules.sys.service.SubjectService;
 import io.renren.modules.sys.vo.StuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sys/stu")
@@ -49,9 +52,9 @@ public class StuController {
         SubjectEntity subjectEntity = new SubjectEntity();
         subjectEntity.setStuId(stuEntity.getStuId());
         subjectEntity.setCost(stuVO.getCost());
-        subjectEntity.setSubName(stuVO.getStuName());
-        subjectEntity.setSubTotal(stuVO.getTotal());
-        subjectEntity.setSubSurplus(stuVO.getTotal());
+        subjectEntity.setSubName(stuVO.getSubName());
+        subjectEntity.setSubTotal(stuVO.getSubTotal());
+        subjectEntity.setSubSurplus(stuVO.getSubTotal());
         subjectEntity.setSubUse(0);
         subjectService.addSub(subjectEntity);
 
@@ -71,7 +74,8 @@ public class StuController {
      * @return 学生列表
      */
     @GetMapping("/list")
-    public R selectAllStu() {
-        return R.ok().put("stuList", stuService.selectAllStu());
+    public R selectAllStu(@RequestParam Map<String, Object> params) {
+        PageUtils stu = stuService.selectAllStu(params);
+        return R.ok().put("stuList", stu);
     }
 }
