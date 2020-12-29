@@ -27,6 +27,7 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
 
     /**
      * 添加学生
+     *
      * @param stu 学生对象
      * @return int
      */
@@ -36,7 +37,8 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
     }
 
     /**
-     *  学生列表的查询
+     * 学生列表的查询
+     *
      * @return List<StuVO>
      */
     @Override
@@ -44,7 +46,8 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
         int pageNo = Integer.parseInt(params.get("page").toString());
         int pageSize = Integer.parseInt(params.get("limit").toString());
         String stuName = (String) params.get("stuName");
-        IPage<StuVO> page = stuDao.selectAllStu(new Page<>(pageNo, pageSize), stuName);
+        String subName = (String) params.get("subName");
+        IPage<StuVO> page = stuDao.selectAllStu(new Page<>(pageNo, pageSize), stuName, subName);
         return new PageUtils(page);
     }
 }

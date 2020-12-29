@@ -39,6 +39,14 @@
             <if test="stuName != null and stuName != ''">
                 a.stu_name like '%${stuName}%'
             </if>
+            <if test="subName != null and subName != ''">
+                b.sub_name like '%${subName}%'
+            </if>
         </where>
+    </select>
+
+<!--通过用户的ID查询用户的openid用于发送消息-->
+    <select id="selectAllStuOPenId" resultType="io.renren.modules.sys.vo.StuOpenidVO">
+        select stu_id, open_id from tb_stu
     </select>
 </mapper>
