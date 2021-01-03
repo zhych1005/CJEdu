@@ -49,4 +49,31 @@
     <select id="selectAllStuOPenId" resultType="io.renren.modules.sys.vo.StuOpenidVO">
         select stu_id, open_id from tb_stu
     </select>
+
+    <!--通过学生的id查询学生的详情-->
+    <select id="selectStuInfo" resultType="io.renren.modules.sys.vo.StuVO">
+        SELECT a.stu_id,
+                a.stu_name,
+                a.gender,
+                a.age,
+                a.address,
+                a.parent,
+                a.mobile,
+                b.sub_name,
+                b.sub_total,
+                b.sub_use,
+                b.cost,
+                b.sub_surplus,
+                a.create_time,
+                a.update_time
+        from tb_stu a
+            inner JOIN tb_subject b
+            on a.stu_id = b.stu_id
+        where a.stu_id = #{stuId}
+    </select>
+
+    <!--学生姓名的重复性判断-->
+    <select id="findStuByName" parameterType="string" resultType="integer">
+        select count(1) from tb_stu where stu_name = #{stuName}
+    </select>
 </mapper>

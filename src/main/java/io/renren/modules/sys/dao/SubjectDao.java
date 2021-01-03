@@ -8,4 +8,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface SubjectDao extends BaseMapper<SubjectEntity> {
 
     int addSub(SubjectEntity subjectEntity);
+
+    /**
+     * 学生课时的修改
+     * @param stuId 学号
+     * @return int
+     */
+    int setDown(Integer stuId);
 }

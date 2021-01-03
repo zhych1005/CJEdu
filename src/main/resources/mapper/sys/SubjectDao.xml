@@ -16,4 +16,10 @@
                 #{subSurplus},
                 #{subUse})
     </insert>
+    <!--學生课时的扣减-->
+    <update id="setDown" parameterType="integer">
+        update tb_subject
+        set sub_surplus = sub_surplus - 1, sub_use = sub_use + 1
+        where stu_id = #{stuId}
+    </update>
 </mapper>

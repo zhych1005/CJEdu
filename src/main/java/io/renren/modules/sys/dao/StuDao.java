@@ -35,4 +35,18 @@ public interface StuDao extends BaseMapper<StuEntity> {
      * @return openid与id
      */
     ArrayList<StuOpenidVO> selectAllStuOPenId();
+
+    /**
+     * 通过学生的id查询学生的详情
+     * @param stuId 学生的id
+     * @return stuVo
+     */
+    StuVO selectStuInfo(Integer stuId);
+
+    /**
+     * 通过学生的姓名查询该姓名的学生数量
+     * @param stuName 学生姓名
+     * @return 数量
+     */
+    Integer findStuByName(String stuName);
 }

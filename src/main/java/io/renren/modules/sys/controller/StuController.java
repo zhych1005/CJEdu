@@ -38,6 +38,10 @@ public class StuController {
      */
     @PostMapping("/save")
     public R addStu(@RequestBody StuVO stuVO) {
+        //学生的重复性判断
+        if (stuService.findStuByName(stuVO.getStuName()) >= 1) {
+            return R.error("学生：" + stuVO.getStuName() + "已存在！");
+        }
         // 学员添加
         StuEntity stuEntity = new StuEntity();
         stuEntity.setStuName(stuVO.getStuName());
@@ -46,6 +50,7 @@ public class StuController {
         stuEntity.setAge(stuVO.getAge());
         stuEntity.setAddress(stuVO.getAddress());
         stuEntity.setParent(stuVO.getParent());
+
         stuService.addStu(stuEntity);
 
         // 课程添加
@@ -77,5 +82,24 @@ public class StuController {
     public R selectAllStu(@RequestParam Map<String, Object> params) {
         PageUtils stu = stuService.selectAllStu(params);
         return R.ok().put("stuList", stu);
+    }
+
+    /**
+     * 通过学生的id查询学生的详情
+     *
+     * @param stuId 学生的id
+     * @return 学生信息
+     */
+    @GetMapping("/info/{stuId}")
+    public R selectStuInfo(@PathVariable("stuId") Integer stuId) {
+        StuVO stuVO = stuService.selectStuInfo(stuId);
+        return R.ok().put("stuVO", stuVO);
+    }
+
+    @PostMapping("/delete")
+    public R deleteStu(@RequestParam Map<String, Object> params) {
+        String stuId = (String) params.get("stuId");
+        String psd = (String) params.get("psd");
+        return R.ok();
     }
 }

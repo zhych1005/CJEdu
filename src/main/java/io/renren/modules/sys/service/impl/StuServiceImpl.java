@@ -50,4 +50,24 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
         IPage<StuVO> page = stuDao.selectAllStu(new Page<>(pageNo, pageSize), stuName, subName);
         return new PageUtils(page);
     }
+
+    /**
+     * 通过学生的id查询学生的详情
+     * @param stuId 学生的id
+     * @return stuVO
+     */
+    @Override
+    public StuVO selectStuInfo(Integer stuId) {
+        return stuDao.selectStuInfo(stuId);
+    }
+
+    /**
+     * 通过学生的姓名查询该姓名的学生数量
+     * @param stuName 学生姓名
+     * @return 数量
+     */
+    @Override
+    public Integer findStuByName(String stuName) {
+        return stuDao.findStuByName(stuName);
+    }
 }
