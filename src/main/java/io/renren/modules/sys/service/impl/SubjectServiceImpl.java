@@ -27,4 +27,14 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectDao, SubjectEntity> i
     public int addSub(SubjectEntity subjectEntity) {
         return subjectDao.addSub(subjectEntity);
     }
+
+    /**
+     * 学生课时的修改
+     * @param stuId 学号
+     * @return int
+     */
+    @Override
+    public int setDown(Integer stuId) {
+        return subjectDao.setDown(stuId);
+    }
 }

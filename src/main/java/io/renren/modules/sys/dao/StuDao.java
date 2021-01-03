@@ -49,4 +49,11 @@ public interface StuDao extends BaseMapper<StuEntity> {
      * @return 数量
      */
     Integer findStuByName(String stuName);
+
+    /**
+     * 通过学生的id删除学生（修改状态为0）
+     * @param stuId 学生的id
+     * @return 删除状态
+     */
+    int deleteStuByStuId(Integer stuId);
 }

@@ -70,4 +70,14 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
     public Integer findStuByName(String stuName) {
         return stuDao.findStuByName(stuName);
     }
+
+    /**
+     * 通过学生的id删除学生（修改状态为0）
+     * @param stuId 学生的id
+     * @return 删除状态
+     */
+    @Override
+    public int deleteStuByStuId(Integer stuId) {
+        return stuDao.deleteStuByStuId(stuId);
+    }
 }

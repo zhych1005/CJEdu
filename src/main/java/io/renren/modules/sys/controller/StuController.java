@@ -11,6 +11,7 @@ import io.renren.modules.sys.service.StuService;
 import io.renren.modules.sys.service.SubjectService;
 import io.renren.modules.sys.vo.StuVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -37,6 +38,7 @@ public class StuController {
      * @return Ok
      */
     @PostMapping("/save")
+    @Transactional
     public R addStu(@RequestBody StuVO stuVO) {
         //学生的重复性判断
         if (stuService.findStuByName(stuVO.getStuName()) >= 1) {
@@ -97,9 +99,36 @@ public class StuController {
     }
 
     @PostMapping("/delete")
+    @Transactional
     public R deleteStu(@RequestParam Map<String, Object> params) {
-        String stuId = (String) params.get("stuId");
+        int stuId = Integer.parseInt(params.get("stuId").toString());
         String psd = (String) params.get("psd");
-        return R.ok();
+        if (psd == null || !psd.equals("admin")) {
+            return R.error("删除失败，密码错误！");
+        } else {
+            int i = stuService.deleteStuByStuId(stuId);
+            if (i == 0) {
+                return R.error();
+            } else {
+                return R.ok();
+            }
+        }
+    }
+
+    @PostMapping("/setDown")
+    @Transactional
+    public R setDown(@RequestParam Map<String, Object> params) {
+        int stuId = Integer.parseInt(params.get("stuId").toString());
+        String psd = (String) params.get("psd");
+        if (psd == null || !psd.equals("admin")) {
+            return R.error("删除失败，密码错误！");
+        } else {
+            int i = subjectService.setDown(stuId);
+            if (i == 0) {
+                return R.error();
+            } else {
+                return R.ok();
+            }
+        }
     }
 }

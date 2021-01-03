@@ -40,8 +40,9 @@
                 a.stu_name like '%${stuName}%'
             </if>
             <if test="subName != null and subName != ''">
-                b.sub_name like '%${subName}%'
+                and b.sub_name like '%${subName}%'
             </if>
+            and a.status = 1
         </where>
     </select>
 
@@ -76,4 +77,9 @@
     <select id="findStuByName" parameterType="string" resultType="integer">
         select count(1) from tb_stu where stu_name = #{stuName}
     </select>
+
+    <!--删除学生，修改状态为0-->
+    <update id="deleteStuByStuId" parameterType="integer">
+        update tb_stu set status = 0 where stu_id = #{stuId}
+    </update>
 </mapper>
