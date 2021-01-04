@@ -37,4 +37,14 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectDao, SubjectEntity> i
     public int setDown(Integer stuId) {
         return subjectDao.setDown(stuId);
     }
+
+    /**
+     * 学生课程信息的修改
+     * @param sub 课程信息
+     * @return 修改的状态
+     */
+    @Override
+    public int updateSubById(SubjectEntity sub) {
+        return subjectDao.updateSubById(sub);
+    }
 }

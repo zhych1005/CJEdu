@@ -52,7 +52,7 @@ public class StuController {
         stuEntity.setAge(stuVO.getAge());
         stuEntity.setAddress(stuVO.getAddress());
         stuEntity.setParent(stuVO.getParent());
-
+        stuEntity.setDescription(stuVO.getDescription());
         stuService.addStu(stuEntity);
 
         // 课程添加
@@ -69,15 +69,15 @@ public class StuController {
         LogSysEntity logSysEntity = new LogSysEntity();
         logSysEntity.setStuId(stuEntity.getStuId());
         logSysEntity.setSubId(subjectEntity.getSubId());
-        logSysEntity.setOperation("学员添加");
+        logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~学员添加");
         logSysEntity.setDescription(stuVO.getDescription());
+        logSysEntity.setStatus(1);
         logService.addLog(logSysEntity);
         return R.ok();
     }
 
     /**
      * 学生列表的查询
-     *
      * @return 学生列表
      */
     @GetMapping("/list")
@@ -88,7 +88,6 @@ public class StuController {
 
     /**
      * 通过学生的id查询学生的详情
-     *
      * @param stuId 学生的id
      * @return 学生信息
      */
@@ -98,6 +97,11 @@ public class StuController {
         return R.ok().put("stuVO", stuVO);
     }
 
+    /**
+     * 学生信息的删除
+     * @param params 学生信息
+     * @return R删除状态
+     */
     @PostMapping("/delete")
     @Transactional
     public R deleteStu(@RequestParam Map<String, Object> params) {
@@ -110,6 +114,14 @@ public class StuController {
             if (i == 0) {
                 return R.error();
             } else {
+                StuVO stuVO = stuService.selectStuInfo(stuId);
+                LogSysEntity logSysEntity = new LogSysEntity();
+                logSysEntity.setStuId(stuVO.getStuId());
+                logSysEntity.setSubId(stuVO.getSubId());
+                logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~学员删除");
+                logSysEntity.setDescription(stuVO.getDescription());
+                logSysEntity.setStatus(4);
+                logService.addLog(logSysEntity);
                 return R.ok();
             }
         }
@@ -121,14 +133,63 @@ public class StuController {
         int stuId = Integer.parseInt(params.get("stuId").toString());
         String psd = (String) params.get("psd");
         if (psd == null || !psd.equals("admin")) {
-            return R.error("删除失败，密码错误！");
+            return R.error("扣减课时失败，密码错误！");
         } else {
+            //todo 线程安全的添加
             int i = subjectService.setDown(stuId);
             if (i == 0) {
                 return R.error();
             } else {
+                StuVO stuVO = stuService.selectStuInfo(stuId);
+                LogSysEntity logSysEntity = new LogSysEntity();
+                logSysEntity.setStuId(stuVO.getStuId());
+                logSysEntity.setSubId(stuVO.getSubId());
+                logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~课时扣减,剩余" + stuVO.getSubSurplus() + "课时");
+                logSysEntity.setDescription(stuVO.getDescription());
+                logSysEntity.setStatus(3);
+                logService.addLog(logSysEntity);
                 return R.ok();
+                //todo 微信通知的发送
             }
+        }
+    }
+
+    @PostMapping("/update")
+    @Transactional
+    public R update(@RequestBody StuVO stuVO) {
+        // 学生信息
+        StuEntity stu = new StuEntity();
+        stu.setStuId(stuVO.getStuId());
+        stu.setStuName(stuVO.getStuName());
+        stu.setMobile(stuVO.getMobile());
+        stu.setGender(stuVO.getGender());
+        stu.setAddress(stuVO.getAddress());
+        stu.setAge(stuVO.getAge());
+        stu.setParent(stuVO.getParent());
+        // 课程信息
+        SubjectEntity sub = new SubjectEntity();
+        sub.setStuId(stuVO.getStuId());
+        sub.setSubName(stuVO.getSubName());
+        sub.setSubTotal(stuVO.getSubTotal());
+        sub.setSubUse(stuVO.getSubUse());
+        sub.setSubSurplus(stuVO.getSubSurplus());
+        sub.setCost(stuVO.getCost());
+        // 学生信息的修改
+        int i = stuService.updateStuById(stu);
+        // 课程信息的修改
+        int j = subjectService.updateSubById(sub);
+
+        if (i == 0 || j == 0) {
+            return R.error("修改失败！");
+        } else {
+            LogSysEntity logSysEntity = new LogSysEntity();
+            logSysEntity.setStuId(stuVO.getStuId());
+            logSysEntity.setSubId(stuVO.getSubId());
+            logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~信息修改");
+            logSysEntity.setDescription(stuVO.getDescription());
+            logSysEntity.setStatus(2);
+            logService.addLog(logSysEntity);
+            return R.ok("修改成功");
         }
     }
 }

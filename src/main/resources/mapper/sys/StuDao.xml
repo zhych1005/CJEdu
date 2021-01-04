@@ -9,14 +9,16 @@
                            gender,
                            address,
                            age,
-                           parent)
+                           parent,
+                           description)
         values (#{stuName},
                 #{openId},
                 #{mobile},
                 #{gender},
                 #{address},
                 #{age},
-                #{parent})
+                #{parent},
+                #{description})
     </insert>
 
     <select id="selectAllStu" resultType="io.renren.modules.sys.vo.StuVO">
@@ -63,7 +65,9 @@
                 b.sub_name,
                 b.sub_total,
                 b.sub_use,
+                b.sub_id,
                 b.cost,
+                a.description,
                 b.sub_surplus,
                 a.create_time,
                 a.update_time
@@ -81,5 +85,16 @@
     <!--删除学生，修改状态为0-->
     <update id="deleteStuByStuId" parameterType="integer">
         update tb_stu set status = 0 where stu_id = #{stuId}
+    </update>
+
+    <!--学生信息的修改-->
+    <update id="updateStuById">
+        update tb_stu set stu_name = #{stuName},
+                          mobile = #{mobile},
+                          gender = #{gender},
+                          address = #{address},
+                          age = #{age},
+                          parent = #{parent}
+        where stu_id = #{stuId}
     </update>
 </mapper>

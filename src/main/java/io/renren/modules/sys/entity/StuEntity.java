@@ -23,4 +23,6 @@ public class StuEntity {
         private String parent;
 
         private Integer type;
+
+        private String description;
 }

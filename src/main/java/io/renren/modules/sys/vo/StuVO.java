@@ -10,6 +10,8 @@ public class StuVO {
 
     private Integer stuId;
 
+    private Integer subId;
+
     private String stuName;
 
     private Integer gender;

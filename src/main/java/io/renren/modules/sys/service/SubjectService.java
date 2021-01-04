@@ -18,4 +18,11 @@ public interface SubjectService  extends IService<SubjectEntity> {
      * @return int
      */
     int setDown(Integer stuId);
+
+    /**
+     * 学生课程信息的修改
+     * @param sub 课程信息
+     * @return 修改的状态
+     */
+    int updateSubById(SubjectEntity sub);
 }

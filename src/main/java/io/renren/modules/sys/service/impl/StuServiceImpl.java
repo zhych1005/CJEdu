@@ -58,6 +58,7 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
      */
     @Override
     public StuVO selectStuInfo(Integer stuId) {
+        System.out.println(stuDao.selectStuInfo(stuId));
         return stuDao.selectStuInfo(stuId);
     }
 
@@ -79,5 +80,15 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
     @Override
     public int deleteStuByStuId(Integer stuId) {
         return stuDao.deleteStuByStuId(stuId);
+    }
+
+    /**
+     * 修改学生的基本信息
+     * @param stu 修改的学生信息
+     * @return 修改结果
+     */
+    @Override
+    public int updateStuById(StuEntity stu) {
+        return stuDao.updateStuById(stu);
     }
 }

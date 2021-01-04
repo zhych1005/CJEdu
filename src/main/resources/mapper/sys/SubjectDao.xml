@@ -22,4 +22,14 @@
         set sub_surplus = sub_surplus - 1, sub_use = sub_use + 1
         where stu_id = #{stuId}
     </update>
+
+    <!--修改学生的课程信息-->
+    <update id="updateSubById">
+        update tb_subject set sub_name = #{subName},
+                              sub_total = #{subTotal},
+                              sub_use = #{subUse},
+                              sub_surplus = #{subSurplus},
+                              cost = #{cost}
+        where stu_id = #{stuId}
+    </update>
 </mapper>

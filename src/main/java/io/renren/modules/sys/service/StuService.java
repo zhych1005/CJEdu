@@ -34,4 +34,11 @@ public interface StuService  extends IService<StuEntity> {
      * @return 删除状态
      */
     int deleteStuByStuId(Integer stuId);
+
+    /**
+     * 修改学生的基本信息
+     * @param stu 修改的学生信息
+     * @return 修改结果
+     */
+    int updateStuById(StuEntity stu);
 }

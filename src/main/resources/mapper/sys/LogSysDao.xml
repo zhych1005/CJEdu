@@ -6,10 +6,12 @@
         insert into tb_Log(stu_id,
                            sub_id,
                            operation,
+                           status,
                            description)
         values (#{stuId},
                 #{subId},
                 #{operation},
+                #{status},
                 #{description})
     </insert>
 </mapper>
