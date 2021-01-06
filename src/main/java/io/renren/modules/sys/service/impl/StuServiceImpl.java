@@ -47,7 +47,8 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
         int pageSize = Integer.parseInt(params.get("limit").toString());
         String stuName = (String) params.get("stuName");
         String subName = (String) params.get("subName");
-        IPage<StuVO> page = stuDao.selectAllStu(new Page<>(pageNo, pageSize), stuName, subName);
+        String level = (String) params.get("level");
+        IPage<StuVO> page = stuDao.selectAllStu(new Page<>(pageNo, pageSize), stuName, subName, level);
         return new PageUtils(page);
     }
 

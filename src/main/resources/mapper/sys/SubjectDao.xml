@@ -6,12 +6,14 @@
         insert into tb_subject(stu_id,
                                sub_name,
                                cost,
+                               level,
                                sub_total,
                                sub_surplus,
                                sub_use)
         values (#{stuId},
                 #{subName},
                 #{cost},
+                #{level},
                 #{subTotal},
                 #{subSurplus},
                 #{subUse})
@@ -27,6 +29,16 @@
     <update id="updateSubById">
         update tb_subject set sub_name = #{subName},
                               sub_total = #{subTotal},
+                              sub_use = #{subUse},
+                              level = #{level},
+                              sub_surplus = #{subSurplus},
+                              cost = #{cost}
+        where stu_id = #{stuId}
+    </update>
+    
+    <!--充值-->
+    <update id="recharge">
+        update tb_subject set sub_total = #{subTotal},
                               sub_use = #{subUse},
                               sub_surplus = #{subSurplus},
                               cost = #{cost}

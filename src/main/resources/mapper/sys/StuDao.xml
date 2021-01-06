@@ -28,6 +28,7 @@
                a.age,
                a.parent,
                a.mobile,
+               b.level,
                b.sub_name,
                b.sub_total,
                b.sub_use,
@@ -44,8 +45,11 @@
             <if test="subName != null and subName != ''">
                 and b.sub_name like '%${subName}%'
             </if>
-            and a.status = 1
+            <if test="level != null and level != ''">
+                and b.level = #{level}
+            </if>
         </where>
+        and a.status = 1 order by a.stu_id desc
     </select>
 
 <!--通过用户的ID查询用户的openid用于发送消息-->
@@ -62,6 +66,7 @@
                 a.address,
                 a.parent,
                 a.mobile,
+                b.level,
                 b.sub_name,
                 b.sub_total,
                 b.sub_use,

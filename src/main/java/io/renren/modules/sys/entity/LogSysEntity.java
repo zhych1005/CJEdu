@@ -18,5 +18,7 @@ public class LogSysEntity {
 
     private String description;
 
+    private String level;
+
     private Integer status;
 }

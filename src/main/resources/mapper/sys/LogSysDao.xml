@@ -3,15 +3,49 @@
 
 <mapper namespace="io.renren.modules.sys.dao.LogSysDao">
     <insert id="addLog">
-        insert into tb_Log(stu_id,
+        insert into tb_log(stu_id,
                            sub_id,
                            operation,
                            status,
+                           level,
                            description)
         values (#{stuId},
                 #{subId},
                 #{operation},
                 #{status},
+                #{level},
                 #{description})
     </insert>
+
+    <!--日志页面的显示-->
+    <select id="findAllLog" resultType="io.renren.modules.sys.vo.LogVO">
+        select a.log_id,
+               b.stu_name,
+               c.sub_name,
+               a.operation,
+               a.status,
+               c.level,
+               a.description,
+               a.create_time
+        from tb_log a
+        inner join tb_stu b
+            on a.stu_id = b.stu_id
+        inner join tb_subject c
+            on a.sub_id = c.sub_id
+        <where>
+            <if test="stuName != null and stuName != ''">
+                b.stu_name like '%${stuName}%'
+            </if>
+            <if test="subName != null and subName != ''">
+                and c.sub_name like '%${subName}%'
+            </if>
+            <if test="level != null and level != ''">
+                and c.level = #{level}
+            </if>
+            <if test="status != null and status != ''">
+                and a.status = #{status}
+            </if>
+        </where>
+        order by log_id desc
+    </select>
 </mapper>

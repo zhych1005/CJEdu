@@ -47,4 +47,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectDao, SubjectEntity> i
     public int updateSubById(SubjectEntity sub) {
         return subjectDao.updateSubById(sub);
     }
+
+    /**
+     * 学生充值
+     * @param sub 充值信息
+     * @return 状态
+     */
+    public int recharge(SubjectEntity sub) {
+        return subjectDao.recharge(sub);
+    }
 }

@@ -27,7 +27,7 @@ public interface StuDao extends BaseMapper<StuEntity> {
      * @param subName 学科
      * @return 分页后的学生的列表
      */
-    IPage<StuVO> selectAllStu(Page<StuVO> page, String stuName, String subName);
+    IPage<StuVO> selectAllStu(Page<StuVO> page, String stuName, String subName, String level);
 
 
     /**

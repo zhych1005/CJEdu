@@ -21,4 +21,6 @@ public class SubjectEntity {
     private Integer subSurplus;
 
     private Integer subUse;
+
+    private String level;
 }

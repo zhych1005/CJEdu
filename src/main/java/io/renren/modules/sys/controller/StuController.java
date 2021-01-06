@@ -10,6 +10,7 @@ import io.renren.modules.sys.service.LogService;
 import io.renren.modules.sys.service.StuService;
 import io.renren.modules.sys.service.SubjectService;
 import io.renren.modules.sys.vo.StuVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +60,7 @@ public class StuController {
         SubjectEntity subjectEntity = new SubjectEntity();
         subjectEntity.setStuId(stuEntity.getStuId());
         subjectEntity.setCost(stuVO.getCost());
+        subjectEntity.setLevel(stuVO.getLevel());
         subjectEntity.setSubName(stuVO.getSubName());
         subjectEntity.setSubTotal(stuVO.getSubTotal());
         subjectEntity.setSubSurplus(stuVO.getSubTotal());
@@ -66,13 +68,13 @@ public class StuController {
         subjectService.addSub(subjectEntity);
 
         // 日志添加
-        LogSysEntity logSysEntity = new LogSysEntity();
-        logSysEntity.setStuId(stuEntity.getStuId());
-        logSysEntity.setSubId(subjectEntity.getSubId());
-        logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~学员添加");
-        logSysEntity.setDescription(stuVO.getDescription());
-        logSysEntity.setStatus(1);
-        logService.addLog(logSysEntity);
+        LogSysEntity convert = convert(stuVO);
+        convert.setStuId(stuEntity.getStuId());
+        convert.setSubId(subjectEntity.getSubId());
+        convert.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~学员添加");
+        convert.setDescription(stuVO.getDescription());
+        convert.setStatus(1);
+        logService.addLog(convert);
         return R.ok();
     }
 
@@ -115,13 +117,10 @@ public class StuController {
                 return R.error();
             } else {
                 StuVO stuVO = stuService.selectStuInfo(stuId);
-                LogSysEntity logSysEntity = new LogSysEntity();
-                logSysEntity.setStuId(stuVO.getStuId());
-                logSysEntity.setSubId(stuVO.getSubId());
-                logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~学员删除");
-                logSysEntity.setDescription(stuVO.getDescription());
-                logSysEntity.setStatus(4);
-                logService.addLog(logSysEntity);
+                LogSysEntity convert = convert(stuVO);
+                convert.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~学员删除");
+                convert.setStatus(4);
+                logService.addLog(convert);
                 return R.ok();
             }
         }
@@ -131,9 +130,12 @@ public class StuController {
     @Transactional
     public R setDown(@RequestParam Map<String, Object> params) {
         int stuId = Integer.parseInt(params.get("stuId").toString());
+        int subSurplus = Integer.parseInt(params.get("subSurplus").toString());
         String psd = (String) params.get("psd");
         if (psd == null || !psd.equals("admin")) {
             return R.error("扣减课时失败，密码错误！");
+        } else if (subSurplus == 0) {
+            return R.error("课时已上完，请充值！");
         } else {
             //todo 线程安全的添加
             int i = subjectService.setDown(stuId);
@@ -141,19 +143,21 @@ public class StuController {
                 return R.error();
             } else {
                 StuVO stuVO = stuService.selectStuInfo(stuId);
-                LogSysEntity logSysEntity = new LogSysEntity();
-                logSysEntity.setStuId(stuVO.getStuId());
-                logSysEntity.setSubId(stuVO.getSubId());
-                logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~课时扣减,剩余" + stuVO.getSubSurplus() + "课时");
-                logSysEntity.setDescription(stuVO.getDescription());
-                logSysEntity.setStatus(3);
-                logService.addLog(logSysEntity);
+                LogSysEntity convert = convert(stuVO);
+                convert.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~课时扣减,剩余" + stuVO.getSubSurplus() + "课时");
+                convert.setStatus(3);
+                logService.addLog(convert);
                 return R.ok();
                 //todo 微信通知的发送
             }
         }
     }
 
+    /**
+     * 学生信息的修改
+     * @param stuVO 学生信息
+     * @return R
+     */
     @PostMapping("/update")
     @Transactional
     public R update(@RequestBody StuVO stuVO) {
@@ -170,6 +174,7 @@ public class StuController {
         SubjectEntity sub = new SubjectEntity();
         sub.setStuId(stuVO.getStuId());
         sub.setSubName(stuVO.getSubName());
+        sub.setLevel(stuVO.getLevel());
         sub.setSubTotal(stuVO.getSubTotal());
         sub.setSubUse(stuVO.getSubUse());
         sub.setSubSurplus(stuVO.getSubSurplus());
@@ -178,18 +183,50 @@ public class StuController {
         int i = stuService.updateStuById(stu);
         // 课程信息的修改
         int j = subjectService.updateSubById(sub);
-
+        LogSysEntity convert = convert(stuVO);
+        convert.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~信息修改");
+        convert.setStatus(2);
+        logService.addLog(convert);
         if (i == 0 || j == 0) {
             return R.error("修改失败！");
         } else {
-            LogSysEntity logSysEntity = new LogSysEntity();
-            logSysEntity.setStuId(stuVO.getStuId());
-            logSysEntity.setSubId(stuVO.getSubId());
-            logSysEntity.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~信息修改");
-            logSysEntity.setDescription(stuVO.getDescription());
-            logSysEntity.setStatus(2);
-            logService.addLog(logSysEntity);
             return R.ok("修改成功");
         }
+    }
+
+    /**
+     * 充值信息
+     * @param sub 充值信息
+     * @return 状态返回
+     */
+    @PostMapping("/recharge")
+    @Transactional
+    public R recharge(@RequestBody StuVO sub) {
+        if (sub.getSubTotal() == null || sub.getCost() == null) {
+            return R.error("请填写充值金额、课时！");
+        }
+        SubjectEntity subjectEntity = new SubjectEntity();
+        BeanUtils.copyProperties(sub, subjectEntity);
+        subjectEntity.setSubTotal(sub.getSubTotal() + sub.getSubSurplus());
+        subjectEntity.setSubUse(0);
+        subjectEntity.setSubSurplus(subjectEntity.getSubTotal());
+        int recharge = subjectService.recharge(subjectEntity);
+        LogSysEntity convert = convert(sub);
+        convert.setOperation(sub.getStuName() + "+" + sub.getSubName() + "~会员充值");
+        convert.setStatus(6);
+        logService.addLog(convert);
+        if (recharge == 0) {
+            return R.error("充值失败！");
+        } else {
+            return  R.ok("充值成功！");
+        }
+    }
+
+    private LogSysEntity convert(StuVO sub) {
+        LogSysEntity logSysEntity = new LogSysEntity();
+        logSysEntity.setStuId(sub.getStuId());
+        logSysEntity.setSubId(sub.getSubId());
+        logSysEntity.setDescription(sub.getDescription());
+        return logSysEntity;
     }
 }

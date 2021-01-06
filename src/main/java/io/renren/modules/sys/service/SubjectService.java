@@ -25,4 +25,11 @@ public interface SubjectService  extends IService<SubjectEntity> {
      * @return 修改的状态
      */
     int updateSubById(SubjectEntity sub);
+
+    /**
+     * 学生充值
+     * @param sub 充值信息
+     * @return 状态
+     */
+    int recharge(SubjectEntity sub);
 }

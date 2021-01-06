@@ -34,6 +34,8 @@ public class StuVO {
 
     private Integer cost;
 
+    private String level;
+
     private String description;
 
     private Date createTime;
