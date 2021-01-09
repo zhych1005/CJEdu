@@ -70,4 +70,11 @@ public interface StuDao extends BaseMapper<StuEntity> {
      * @return DeductionVO
      */
     ArrayList<DeductionVO> deductionInfo();
+
+//    /**
+//     * 学生课时的批量扣减
+//     * @param list 学生的id
+//     * @return 扣减状态
+//     */
+//    int updateList(List<Integer> list);
 }

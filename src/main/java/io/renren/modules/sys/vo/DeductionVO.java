@@ -7,7 +7,11 @@ public class DeductionVO {
 
     private Integer stuId;
 
+    private Integer subId;
+
     private Integer subSurplus;
 
     private String openId;
+
+    private String description;
 }

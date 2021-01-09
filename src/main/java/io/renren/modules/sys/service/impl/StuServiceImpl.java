@@ -103,4 +103,14 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
     public ArrayList<DeductionVO> deductionInfo() {
         return stuDao.deductionInfo();
     }
+
+//    /**
+//     * 学生课时的批量扣减
+//     * @param list 学生的id
+//     * @return 扣减状态
+//     */
+//    @Override
+//    public int updateList(List<Integer> list) {
+//        return stuDao.updateList(list);
+//    }
 }

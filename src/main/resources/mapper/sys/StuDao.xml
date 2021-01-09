@@ -109,4 +109,14 @@
         inner join tb_subject b
         on a.stu_id = b.stu_id
     </select>
+
+    <!--学生课时的批量扣减-->
+<!--    <update id="updateList">-->
+<!--        update tb_subject set sub_use = 1-->
+<!--        where stu_id in (-->
+<!--        <foreach collection="list" item="item" index="index" open="" close="" separator=",">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--        )-->
+<!--    </update>-->
 </mapper>

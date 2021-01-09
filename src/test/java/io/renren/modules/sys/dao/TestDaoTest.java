@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Array;
 import java.util.Arrays;
-import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -21,6 +19,7 @@ public class TestDaoTest extends TestCase {
     @Test
     public void update() {
         Integer[] arr = {1, 2, 3};
+        System.out.println(Arrays.asList(arr));
         testDao.updateList(Arrays.asList(arr));
     }
 }
