@@ -9,12 +9,18 @@ import io.renren.modules.sys.entity.SubjectEntity;
 import io.renren.modules.sys.service.LogService;
 import io.renren.modules.sys.service.StuService;
 import io.renren.modules.sys.service.SubjectService;
+import io.renren.modules.sys.vo.DeductionVO;
 import io.renren.modules.sys.vo.StuVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Source;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -220,6 +226,41 @@ public class StuController {
         } else {
             return  R.ok("充值成功！");
         }
+    }
+
+    @GetMapping("/allSetDown/{stu}/{pwd}")
+    public R allSetDown(@PathVariable("stu") List<Integer> stu, @PathVariable("pwd") String pwd) {
+        //密码校验
+        if (pwd == null || !pwd.equals("admin")) {
+            return R.error("扣减课时失败，密码错误！");
+        }
+        //查询所有的学生
+        ArrayList<DeductionVO> deductionVOS = stuService.deductionInfo();
+        //查找选中的学生的剩余课时，没有的提示扣减失败
+        for (DeductionVO deductionVO : deductionVOS) {
+            for (Integer integer : stu) {
+                if (deductionVO.getSubSurplus() == 0 && deductionVO.getStuId().equals(integer)) {
+                    return R.error("扣减课时失败，存在0课时学员，请去除后重新扣减！");
+                } else {
+                    // 课时扣减
+                }
+            }
+//            if (deductionVO.getSurplus() == 0) {
+//                return R.error("扣减课时失败，密码错误！");
+//            } else {
+//                System.out.println("1234");
+//            }
+        }
+        //执行扣减操作，线程安全。
+        //发送微信通知
+//        if (pwd == null || !pwd.equals("admin")) {
+//            return R.error("扣减课时失败，密码错误！");
+//        } else if (subSurplus == 0) {
+//            return R.error("课时已上完，请充值！");
+//        } else {
+//            System.out.println("123");
+//        }
+        return R.ok();
     }
 
     private LogSysEntity convert(StuVO sub) {

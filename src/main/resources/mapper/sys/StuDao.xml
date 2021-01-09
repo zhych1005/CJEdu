@@ -102,4 +102,11 @@
                           parent = #{parent}
         where stu_id = #{stuId}
     </update>
+
+    <!--查询所有学生的ID与剩余课时-->
+    <select id="deductionInfo" resultType="io.renren.modules.sys.vo.DeductionVO">
+        select a.stu_id, b.sub_surplus, a.open_id from tb_stu a
+        inner join tb_subject b
+        on a.stu_id = b.stu_id
+    </select>
 </mapper>

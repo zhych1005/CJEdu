@@ -8,10 +8,12 @@ import io.renren.common.utils.PageUtils;
 import io.renren.modules.sys.dao.StuDao;
 import io.renren.modules.sys.entity.StuEntity;
 import io.renren.modules.sys.service.StuService;
+import io.renren.modules.sys.vo.DeductionVO;
 import io.renren.modules.sys.vo.StuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Service("StuService")
@@ -91,5 +93,14 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
     @Override
     public int updateStuById(StuEntity stu) {
         return stuDao.updateStuById(stu);
+    }
+
+    /**
+     * 查询所有学生的id与剩余课时
+     * @return DeductionVO
+     */
+    @Override
+    public ArrayList<DeductionVO> deductionInfo() {
+        return stuDao.deductionInfo();
     }
 }

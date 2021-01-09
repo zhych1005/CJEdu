@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.renren.modules.sys.entity.StuEntity;
+import io.renren.modules.sys.vo.DeductionVO;
 import io.renren.modules.sys.vo.StuOpenidVO;
 import io.renren.modules.sys.vo.StuVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -63,4 +64,10 @@ public interface StuDao extends BaseMapper<StuEntity> {
      * @return 修改结果
      */
     int updateStuById(StuEntity stu);
+
+    /**
+     * 查询所有学生的id与剩余课时
+     * @return DeductionVO
+     */
+    ArrayList<DeductionVO> deductionInfo();
 }

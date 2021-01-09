@@ -4,8 +4,10 @@ package io.renren.modules.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.sys.entity.StuEntity;
+import io.renren.modules.sys.vo.DeductionVO;
 import io.renren.modules.sys.vo.StuVO;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public interface StuService  extends IService<StuEntity> {
@@ -41,4 +43,10 @@ public interface StuService  extends IService<StuEntity> {
      * @return 修改结果
      */
     int updateStuById(StuEntity stu);
+
+    /**
+     * 查询所有学生的id与剩余课时
+     * @return DeductionVO
+     */
+    ArrayList<DeductionVO> deductionInfo();
 }
