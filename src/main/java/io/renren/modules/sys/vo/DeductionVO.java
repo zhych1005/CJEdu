@@ -14,4 +14,8 @@ public class DeductionVO {
     private String openId;
 
     private String description;
+
+    private String stuName;
+
+    private String subName;
 }

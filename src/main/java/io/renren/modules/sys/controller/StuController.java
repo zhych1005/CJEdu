@@ -149,8 +149,8 @@ public class StuController {
                 convert.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~课时扣减,剩余" + stuVO.getSubSurplus() + "课时");
                 convert.setStatus(3);
                 logService.addLog(convert);
-                return R.ok();
                 //todo 微信通知的发送
+                return R.ok();
             }
         }
     }
@@ -241,9 +241,15 @@ public class StuController {
                 } else if (deductionVO.getStuId().equals(integer)) {
                     //批量扣减
                     subjectService.setDown(integer);
-                    System.out.println(integer);
-                    //发送微信通知
-                    System.out.println(deductionVO.getOpenId());
+                    // 日志的写入
+                    LogSysEntity log = new LogSysEntity();
+                    log.setStuId(deductionVO.getStuId());
+                    log.setSubId(deductionVO.getSubId());
+                    log.setDescription(deductionVO.getDescription());
+                    log.setOperation(deductionVO.getStuName() + "+" + deductionVO.getSubName() + "~课时扣减,剩余" + (deductionVO.getSubSurplus() - 1) + "课时");
+                    log.setStatus(3);
+                    logService.addLog(log);
+                    //发送微信通知 todo
                 }
             }
         }
