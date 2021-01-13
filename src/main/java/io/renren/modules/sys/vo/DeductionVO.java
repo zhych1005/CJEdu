@@ -18,4 +18,6 @@ public class DeductionVO {
     private String stuName;
 
     private String subName;
+
+    private String level;
 }

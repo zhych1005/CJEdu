@@ -111,10 +111,31 @@
                b.sub_id,
                a.description,
                a.stu_name,
-               b.sub_name
+               b.sub_name,
+               b.level
         from tb_stu a
         inner join tb_subject b
         on a.stu_id = b.stu_id
+    </select>
+
+    <!--查询所有学生的ID与剩余课时-->
+    <select id="findStuById" resultType="io.renren.modules.sys.vo.DeductionVO">
+        select a.stu_id,
+               b.sub_surplus,
+               a.open_id,
+               b.sub_id,
+               a.description,
+               a.stu_name,
+               b.sub_name,
+               b.level
+        from tb_stu a
+                 inner join tb_subject b
+                            on a.stu_id = b.stu_id
+        <where>
+            <if test="stuId != null and stuId != ''">
+                and a.stu_id = #{stuId}
+            </if>
+        </where>
     </select>
 
     <!--学生课时的批量扣减-->

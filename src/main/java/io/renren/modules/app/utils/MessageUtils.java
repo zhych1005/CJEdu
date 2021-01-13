@@ -2,6 +2,7 @@ package io.renren.modules.app.utils;
 
 import io.renren.modules.app.config.ProjectParamConfig;
 import io.renren.modules.app.vo.MessageVO;
+import io.renren.modules.sys.vo.DeductionVO;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -21,7 +22,6 @@ import java.util.List;
 @Slf4j
 @Component
 public class MessageUtils {
-
 
     private WxMpService wxMpService;
 
@@ -203,6 +203,31 @@ public class MessageUtils {
             log.info("【维修消息】发送成功");
         } catch (WxErrorException e) {
             log.error("【维修消息】发送失败，{}", e);
+        }
+    }
+
+    /**
+     * 课程扣减提醒
+     * @param openid 学员openid
+     * @param deductionVO 消息内容
+     */
+    public synchronized void classNotify(String openid, DeductionVO deductionVO, Date time) {
+        WxMpTemplateMessage templateMessage = wxTemplate(openid, projectParamConfig.getClassTemplateId(), "");
+        List<WxMpTemplateData> data = Arrays.asList(
+                new WxMpTemplateData("first", "您好，学生<" + deductionVO.getStuName() + ">已签到！", "#E1B741"),
+                new WxMpTemplateData("keyword1", deductionVO.getLevel() + "~" + deductionVO.getSubName(), "#E1B741"),
+                new WxMpTemplateData("keyword2", "1课时", "#E1B741"),
+                new WxMpTemplateData("keyword3", String.valueOf(deductionVO.getSubSurplus()) + "课时", "#E1B741"),
+                new WxMpTemplateData("keyword4", sbf.format(time), "#E1B741"),
+                new WxMpTemplateData("keyword5", sbf.format(time), "#E1B741"),
+                new WxMpTemplateData("remark", "感谢您选择超杰教育！")
+        );
+        templateMessage.setData(data);
+        try {
+            messageUtils.wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);
+            log.info("【课程扣减提醒】发送成功");
+        } catch (WxErrorException e) {
+            log.error("【课程扣减提醒】发送失败，{}", e);
         }
     }
 }

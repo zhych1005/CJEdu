@@ -81,6 +81,8 @@ application:
     appId: wx66689c9e28e11e68
     appSecret: cd8e6963364812d21598124e6ff30f67
     #------------------------------模板ID--------------------------------
+    #课时扣减模板
+    classTemplateId: 16BcGr_27rtdA2PniAZbuJzJwLHpvaHobOhcSlStom8
     #新订单模板
     newOrderTemplateId: 4Jcgu0No_MjLCxrbijlohZWuI3bCyQsnZt1m9uk_AIk
     #配送完成模板
@@ -115,7 +117,6 @@ application:
     picUrl: http://www.zhych.run:8081/cjedu/image/
 
 
-
   wxpay:
     app_id: wx66689c9e28e11e68
     app_secret: cd8e6963364812d21598124e6ff30f67
@@ -135,6 +136,7 @@ application:
     openid: oOobD1fTnfUAgs_9q2XO7ax1JAoI
     url: http://zhych.natapp1.cc
     templateId: DWY_nI4lbYrpMV0Zey4LESD0nKHWfxgFeBYugOXL7fs
+
 logging:
   pattern:
     console: '%-5level %msg%n'

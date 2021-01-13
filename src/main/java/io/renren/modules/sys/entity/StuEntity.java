@@ -1,11 +1,13 @@
 package io.renren.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 @Data
 @TableName("tb_stu")
 public class StuEntity {
 
+        @TableId
         private Integer stuId;
 
         private String stuName;

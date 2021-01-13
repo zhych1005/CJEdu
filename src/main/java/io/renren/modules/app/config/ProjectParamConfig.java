@@ -28,6 +28,8 @@ public class ProjectParamConfig {
 
     private String takeOrderOK;
 
+    private String classTemplateId;
+
     /*详情页*/
     public String assignOrderUrl;
 

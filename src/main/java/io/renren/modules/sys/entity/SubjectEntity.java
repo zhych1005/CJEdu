@@ -1,6 +1,7 @@
 package io.renren.modules.sys.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import lombok.Data;
 @TableName("tb_subject")
 public class SubjectEntity {
 
+    @TableId
     private Integer subId;
 
     private Integer stuId;

@@ -3,6 +3,7 @@ package io.renren.modules.sys.controller;
 
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
+import io.renren.modules.app.utils.MessageUtils;
 import io.renren.modules.sys.entity.LogSysEntity;
 import io.renren.modules.sys.entity.StuEntity;
 import io.renren.modules.sys.entity.SubjectEntity;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +29,14 @@ public class StuController {
     private final StuService stuService;
     private final SubjectService subjectService;
     private final LogService logService;
+    private final MessageUtils messageUtils;
 
     @Autowired
-    public StuController(StuService stuService, SubjectService subjectService, LogService logService) {
+    public StuController(StuService stuService, SubjectService subjectService, LogService logService, MessageUtils messageUtils) {
         this.stuService = stuService;
         this.subjectService = subjectService;
         this.logService = logService;
+        this.messageUtils = messageUtils;
     }
 
     /**
@@ -144,12 +148,17 @@ public class StuController {
             if (i == 0) {
                 return R.error();
             } else {
-                StuVO stuVO = stuService.selectStuInfo(stuId);
-                LogSysEntity convert = convert(stuVO);
-                convert.setOperation(stuVO.getStuName() + "+" + stuVO.getSubName() + "~课时扣减,剩余" + stuVO.getSubSurplus() + "课时");
-                convert.setStatus(3);
-                logService.addLog(convert);
-                //todo 微信通知的发送
+                DeductionVO deductionVO = stuService.findStuById(stuId);
+
+                // 日志的写入
+                LogSysEntity log = new LogSysEntity();
+                log.setStuId(deductionVO.getStuId());
+                log.setSubId(deductionVO.getSubId());
+                log.setDescription(deductionVO.getDescription());
+                log.setOperation(deductionVO.getStuName() + "+" + deductionVO.getSubName() + "~课时扣减,剩余" + deductionVO.getSubSurplus() + "课时");
+                log.setStatus(3);
+                logService.addLog(log);
+                messageUtils.classNotify(deductionVO.getOpenId(), deductionVO, new Date());
                 return R.ok();
             }
         }
@@ -249,7 +258,7 @@ public class StuController {
                     log.setOperation(deductionVO.getStuName() + "+" + deductionVO.getSubName() + "~课时扣减,剩余" + (deductionVO.getSubSurplus() - 1) + "课时");
                     log.setStatus(3);
                     logService.addLog(log);
-                    //发送微信通知 todo
+                    messageUtils.classNotify(deductionVO.getOpenId(), deductionVO, new Date());
                 }
             }
         }

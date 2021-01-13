@@ -10,5 +10,4 @@ public class CJEduApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CJEduApplication.class, args);
 	}
-
 }

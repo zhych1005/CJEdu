@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.ShiroUtils;
 import io.renren.modules.sys.dao.StuDao;
 import io.renren.modules.sys.entity.StuEntity;
 import io.renren.modules.sys.service.StuService;
@@ -102,6 +103,16 @@ public class StuServiceImpl extends ServiceImpl<StuDao, StuEntity> implements St
     @Override
     public ArrayList<DeductionVO> deductionInfo() {
         return stuDao.deductionInfo();
+    }
+
+    /**
+     * 通过学生的id查询学生的详情用于发微信通知
+     * @param stuId 学生的id
+     * @return DeductionVO
+     */
+    @Override
+    public DeductionVO findStuById(Integer stuId) {
+        return stuDao.findStuById(stuId);
     }
 
 //    /**
